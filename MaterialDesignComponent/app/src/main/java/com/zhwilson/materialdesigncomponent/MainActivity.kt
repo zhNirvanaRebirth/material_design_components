@@ -1,5 +1,8 @@
 package com.zhwilson.materialdesigncomponent
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import android.support.design.widget.FloatingActionButton
@@ -26,6 +29,18 @@ class MainActivity : AppCompatActivity() {
         // Example of a call to a native method
         val tv = findViewById(R.id.sample_text) as TextView
         tv.text = stringFromJNI()
+
+        val nv = findViewById(R.id.navigation_view) as TextView
+        nv.setOnClickListener {
+            startActivity<NavigationViewActivity>()
+//            startActivity(Intent(MainActivity@this, NavigationViewActivity::class.java))
+        }
+    }
+
+    inline fun <reified T: Activity> Context.startActivity(vararg params: Pair<String, String>) {
+        val intent = Intent(this, T::class.java)
+        params.forEach { intent.putExtra(it.first, it.second) }
+        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
